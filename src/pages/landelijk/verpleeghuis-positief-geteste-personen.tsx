@@ -1,14 +1,14 @@
 import Getest from '~/assets/test.svg';
+import { Box } from '~/components-styled/base';
+import { KpiTile } from '~/components-styled/kpi-tile';
+import { KpiValue } from '~/components-styled/kpi-value';
 import { LineChart } from '~/components/charts/index';
-import { FCWithLayout } from '~/components/layout';
 import { ContentHeader } from '~/components/contentHeader';
+import { FCWithLayout } from '~/components/layout';
 import { getNationalLayout } from '~/components/layout/NationalLayout';
 import { SEOHead } from '~/components/seoHead';
 import siteText from '~/locale/index';
 import getNlData, { INationalData } from '~/static-props/nl-data';
-import { KpiTile } from '~/components-styled/kpi-tile';
-import { KpiValue } from '~/components-styled/kpi-value';
-import { TwoKpiSection } from '~/components-styled/two-kpi-section';
 
 const text = siteText.verpleeghuis_positief_geteste_personen;
 
@@ -32,13 +32,23 @@ const NursingHomeInfectedPeople: FCWithLayout<INationalData> = ({ data }) => {
         }}
       />
 
-      <TwoKpiSection>
-        <KpiTile title={text.barscale_titel} description={text.extra_uitleg}>
+      {/**
+       * @TODO we need to figure out how to apply these margins on a more generic approach.
+       * Note that we cannot use the KpiSection component because that, combined with a
+       * KpiTile, renders a nested shadow. The DoubleKpiSection does not render that shadow,
+       * which imho implies that we need to rethink names and/or implementation of these components.
+       */}
+      <Box mb={4} ml={{ _: -4, sm: 0 }} mr={{ _: -4, sm: 0 }}>
+        <KpiTile
+          wide
+          title={text.barscale_titel}
+          description={text.extra_uitleg}
+        >
           <KpiValue
             absolute={data.nursing_home.last_value.newly_infected_people}
           />
         </KpiTile>
-      </TwoKpiSection>
+      </Box>
 
       <article className="metric-article">
         <LineChart

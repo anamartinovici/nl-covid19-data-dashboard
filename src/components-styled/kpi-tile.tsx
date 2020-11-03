@@ -12,6 +12,7 @@ interface KpiTileProps {
     text: string;
     href: string;
   };
+  wide?: boolean;
 }
 
 /**
@@ -23,11 +24,32 @@ export function KpiTile({
   description,
   children,
   sourcedFrom,
+  wide,
 }: KpiTileProps) {
-  return (
-    <Tile>
+  const content = wide ? (
+    <>
+      <Box display={{ lg: 'flex' }}>
+        <Box>
+          <Heading level={3}>{title}</Heading>
+          <Box mb={4}>{children}</Box>
+        </Box>
+        <Box>
+          {description && (
+            <Text
+              as="div"
+              dangerouslySetInnerHTML={{
+                __html: description,
+              }}
+            />
+          )}
+        </Box>
+      </Box>
+    </>
+  ) : (
+    <>
       <Heading level={3}>{title}</Heading>
       <Box mb={4}>{children}</Box>
+
       {description && (
         <Text
           as="div"
@@ -36,6 +58,12 @@ export function KpiTile({
           }}
         />
       )}
+    </>
+  );
+
+  return (
+    <Tile>
+      {content}
       {sourcedFrom && (
         <>
           {/* Using a spacer to push the footer down */}
