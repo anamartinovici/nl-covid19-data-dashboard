@@ -1,3 +1,4 @@
+import Warning from '~/assets/warning.svg';
 import css from '@styled-system/css';
 import fs from 'fs';
 import { useRouter } from 'next/router';
@@ -25,6 +26,7 @@ import { MDToHTMLString } from '~/utils/MDToHTMLString';
 import { replaceVariablesInText } from '~/utils/replaceVariablesInText';
 import styles from './index.module.scss';
 import { EscalationMapLegenda } from './veiligheidsregio';
+import { MessageTile } from '~/components-styled/message-tile';
 
 interface StaticProps {
   props: INationalHomepageData;
@@ -68,7 +70,12 @@ const Home: FCWithLayout<INationalHomepageData> = (props) => {
       />
       <article
         className={styles.notification}
-        css={css({ mb: 4, ml: [-4, null, 0], mr: [-4, null, 0] })}
+        css={css({
+          mb: 4,
+          ml: [-4, null, 0],
+          mr: [-4, null, 0],
+          boxShadow: 'tile',
+        })}
       >
         <div className={styles.textgroup}>
           <h3 className={styles.header}>{text.notificatie.titel}</h3>
@@ -89,6 +96,16 @@ const Home: FCWithLayout<INationalHomepageData> = (props) => {
           <span>{text.notificatie.link.text}</span>
         </a>
       </article>
+
+      {text.laatste_ontwikkelingen.important_message && (
+        <MessageTile icon={<Warning fill="black" />}>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: text.laatste_ontwikkelingen.important_message,
+            }}
+          />
+        </MessageTile>
+      )}
 
       <ChoroplethTile
         title={text.veiligheidsregio_index.selecteer_titel}
@@ -180,13 +197,23 @@ const getEscalationCounts = (
 };
 
 export async function getStaticProps(): Promise<StaticProps> {
-  const text = (await import('../locale/index')).default;
+  const text = { ...(await import('../locale/index')).default };
 
   const serializedContent = MDToHTMLString(
     text.veiligheidsregio_index.selecteer_toelichting
   );
 
-  text.veiligheidsregio_index.selecteer_toelichting = serializedContent;
+  text.veiligheidsregio_index = {
+    ...text.veiligheidsregio_index,
+    selecteer_toelichting: serializedContent,
+  };
+
+  text.laatste_ontwikkelingen = {
+    ...text.laatste_ontwikkelingen,
+    important_message: MDToHTMLString(
+      text.laatste_ontwikkelingen.important_message
+    ),
+  };
 
   const filePath = path.join(process.cwd(), 'public', 'json', 'NL.json');
   const fileContents = fs.readFileSync(filePath, 'utf8');

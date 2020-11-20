@@ -17,9 +17,12 @@ interface OverProps {
 }
 
 export async function getStaticProps(): Promise<StaticProps> {
-  const text = (await import('../locale/index')).default;
+  const text = { ...(await import('../locale/index')).default };
 
-  text.over_beschrijving.text = MDToHTMLString(text.over_beschrijving.text);
+  text.over_beschrijving = {
+    ...text.over_beschrijving,
+    text: MDToHTMLString(text.over_beschrijving.text),
+  };
 
   const filePath = path.join(process.cwd(), 'public', 'json', 'NL.json');
   const fileContents = fs.readFileSync(filePath, 'utf8');

@@ -969,7 +969,8 @@
     "title": "Latest developments",
     "menu_subtitle": "Slower decrease in new COVID-19 infections",
     "alle_cijfers_header": "",
-    "alle_cijfers_link": ""
+    "alle_cijfers_link": "",
+    "important_message": "belangrijk [bericht](#)"
   },
   "escalatie_niveau": {
     "titel": "Level of risk",

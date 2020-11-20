@@ -969,7 +969,8 @@
     "title": "Laatste ontwikkelingen",
     "menu_subtitle": "Langzamere afname COVID-19 meldingen ",
     "alle_cijfers_header": "Benieuwd naar alle cijfers?",
-    "alle_cijfers_link": "Bekijk alle cijfers"
+    "alle_cijfers_link": "Bekijk alle cijfers",
+    "important_message": "belangrijk [bericht](#)"
   },
   "escalatie_niveau": {
     "titel": "Risiconiveaus",
